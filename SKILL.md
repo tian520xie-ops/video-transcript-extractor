@@ -20,7 +20,7 @@ agent_created: true
 
 ## 环境解析（每次任务开始先做）
 
-1. 读取 `{用户主目录}/视频转写工具/环境说明.md`，取出 PY / ASR_SCRIPT / MODELS / FFMPEG / FFPROBE / SKILL_DIR。找不到时查 `AI课程工具` 和当前智能体技能目录。**不要照搬任何示例盘符或用户名**。
+1. 读取 `{用户主目录}/视频转写工具/环境说明.md`，取出 PY / ASR_SCRIPT / MODELS / FFMPEG / FFPROBE / SKILL_DIR；也可用环境变量 `TRANSCRIBE_PY` / `TRANSCRIBE_MODELS` 覆盖。找不到时查当前智能体技能目录。**不要照搬任何示例盘符或用户名**。
 2. 运行 `scripts/check_env.py` 一次性解析并打印实际路径与可用性；它同时检查 CDP Proxy 健康状态。
 3. 若 CDP 不可用，提示用户本人在 Chrome 打开 `chrome://inspect/#remote-debugging` 勾选允许远程调试；此授权不可代点。**本地文件任务完全跳过此步**。
 
