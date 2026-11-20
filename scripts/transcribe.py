@@ -10,7 +10,7 @@
       [--models-dir <模型根目录>] [--ffmpeg <ffmpeg路径>]
       [--venv-python <解释器路径>]
 
-相对课程原脚本的两处修复（发布版必须保留）：
+相对原始脚本的两处修复（发布版必须保留）：
   1. CT-punc 返回 (文本, 标点序列) 元组 -> 取 [0]；原脚本直接当字符串会 TypeError。
   2. 顶部 sys.dont_write_bytecode = True，规避 librosa 导入时的 pyc 批量删除拦截。
 """
@@ -18,14 +18,23 @@ import sys
 
 sys.dont_write_bytecode = True
 
-import argparse, json, os, shutil, subprocess, tempfile, wave
+import argparse, json, os, re, shutil, subprocess, tempfile, wave
 from pathlib import Path
 
 HOME = Path.home()
 
 
 def default_models():
-    return Path(os.environ.get("TRANSCRIBE_MODELS", HOME / "AI课程工具/模型"))
+    """模型根目录：环境变量 > 环境说明.md 动态解析 > 报错。不写死本机路径。"""
+    if os.environ.get("TRANSCRIBE_MODELS"):
+        return Path(os.environ["TRANSCRIBE_MODELS"]).expanduser()
+    for md in [HOME / "视频转写工具/环境说明.md"]:
+        if md.exists():
+            txt = md.read_text(encoding="utf-8", errors="replace")
+            m = re.search(r"(~/[^\s`]*speech_paraformer[^\s`/]*)", txt)
+            if m:
+                return Path(os.path.expanduser(m.group(1))).parent
+    raise SystemExit("未找到模型目录：请设置 TRANSCRIBE_MODELS 或传入 --models-dir")
 
 
 def default_ffmpeg():
@@ -37,9 +46,9 @@ def main():
     ap.add_argument("video", help="输入视频/音频文件路径")
     ap.add_argument("-o", "--out", help="输出前缀（不含扩展名），默认与输入同名")
     ap.add_argument("--asr-only", action="store_true", help="跳过 CT-punc 补标点")
-    ap.add_argument("--models-dir", help="模型根目录（默认从 TRANSCRIBE_MODELS 或 ~/AI课程工具/模型）")
+    ap.add_argument("--models-dir", help="模型根目录（默认从 TRANSCRIBE_MODELS 或环境说明.md 解析）")
     ap.add_argument("--ffmpeg", help="ffmpeg 路径（默认从 PATH 或常见安装位置）")
-    ap.add_argument("--venv-python", help="课程 venv 解释器路径（仅用于提示，不在此脚本内调用）")
+    ap.add_argument("--venv-python", help="venv 解释器路径（仅用于提示，不在此脚本内调用）")
     args = ap.parse_args()
 
     model_root = Path(args.models_dir).expanduser().resolve() if args.models_dir else default_models()
