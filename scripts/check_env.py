@@ -19,8 +19,7 @@ def find_env_md(explicit=None):
     if explicit:
         p = Path(explicit).expanduser()
         return p if p.exists() else None
-    for c in [HOME / "视频转写工具/环境说明.md",
-              HOME / "AI课程工具/环境说明.md"]:
+    for c in [HOME / "视频转写工具/环境说明.md"]:
         if c.exists():
             return c
     return None
@@ -89,8 +88,8 @@ def parse_env_md(md):
 def resolve():
     md = find_env_md()
     cfg = parse_env_md(md)
-    py = cfg.get("PY") or str(HOME / "AI课程工具/transcribe-env/bin/python")
-    models = cfg.get("MODELS") or str(HOME / "AI课程工具/模型")
+    py = cfg.get("PY") or os.environ.get("TRANSCRIBE_PY") or "python3"
+    models = cfg.get("MODELS") or os.environ.get("TRANSCRIBE_MODELS") or str(HOME / "transcribe-models")
     script = cfg.get("ASR_SCRIPT") or str(HOME / "视频转写工具/transcribe.py")
     ffmpeg = cfg.get("FFMPEG") or shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"
     ffprobe = cfg.get("FFPROBE") or shutil.which("ffprobe") or "/opt/homebrew/bin/ffprobe"
