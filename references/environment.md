@@ -6,16 +6,16 @@
 
 1. `check_env.py --md <显式路径>` 指定的 `环境说明.md`
 2. `{用户主目录}/视频转写工具/环境说明.md`
-3. `{用户主目录}/AI课程工具/环境说明.md`
+3. 环境变量 `TRANSCRIBE_PY` / `TRANSCRIBE_MODELS`
 4. 脚本内置默认（基于 `Path.home()` 与 `shutil.which`）
 
 ## 必需字段
 
 | 变量 | 含义 | 本机默认值（仅示例，实际以解析为准） |
 |---|---|---|
-| PY | 配置好的 Python 解释器（venv） | `~/AI课程工具/transcribe-env/bin/python` |
+| PY | 配置好的 Python 解释器（venv） | 从环境说明.md 解析，或 `TRANSCRIBE_PY` |
 | ASR_SCRIPT | 转写脚本 | `~/视频转写工具/transcribe.py`（发布版用本 skill 的 `scripts/transcribe.py`） |
-| MODELS | 模型根目录 | `~/AI课程工具/模型` |
+| MODELS | 模型根目录 | 从环境说明.md 解析，或 `TRANSCRIBE_MODELS` |
 | FFMPEG | ffmpeg 可执行文件 | `/opt/homebrew/bin/ffmpeg` 或 PATH 中的 ffmpeg |
 | FFPROBE | ffprobe 可执行文件 | `/opt/homebrew/bin/ffprobe` 或 PATH 中的 ffprobe |
 | SKILL_DIR | Web Access 目录 | `~/.workbuddy/skills/web-access` |
