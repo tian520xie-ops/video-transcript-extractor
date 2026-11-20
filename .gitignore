@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 任务产物（媒体、识别稿、任务目录）
+视频转写任务_*/
+media/
+asr/
+*.mp4
+*.mp3
+*.m4s
+*.m4a
+*.wav
+*.srt
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 打包输出
+dist/
+*.zip
+
+# 本地环境配置（含个人路径，不入库）
+*.local.md
+env.local.json
