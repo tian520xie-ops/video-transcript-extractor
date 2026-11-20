@@ -68,7 +68,7 @@ video-transcript-extractor/
 
 ## 已知问题与设计取舍
 
-1. **课程原始 `transcribe.py` 有 bug**：`funasr_onnx 0.4.11` 的 CT-punc 返回 `(文本, 标点序列)` 元组，原脚本直接当字符串写出会 `TypeError`。本仓库的 `scripts/transcribe.py` 已取 `[0]` 修复，不修改用户原脚本。
+1. **原始 `transcribe.py` 有 bug**：`funasr_onnx 0.4.11` 的 CT-punc 返回 `(文本, 标点序列)` 元组，原脚本直接当字符串写出会 `TypeError`。本仓库的 `scripts/transcribe.py` 已取 `[0]` 修复，不修改用户原脚本。
 2. **librosa 导入触发环境 safe-delete 拦截**：脚本顶部设置 `sys.dont_write_bytecode=True`，调用时另加 `PYTHONDONTWRITEBYTECODE=1`。
 3. **SRT 强制输出**：脚本无关闭选项，产出后忽略，不交付。
 4. **交叉核对服务不稳定**：实测约 1/3 成功、两次 900 秒超时；设为可选短超时步骤，失败即降级。
